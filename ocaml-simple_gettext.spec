@@ -1,7 +1,7 @@
 %define base_name   simple_gettext
 %define name		ocaml-%{base_name}
 %define version     0.1
-%define release     %mkrel 9
+%define release     %mkrel 10
 
 Name:		    %{name}
 Version:	    %{version}
@@ -11,7 +11,7 @@ URL:		    http://merd.net/pixel/ocaml-simple_gettext
 Source0:	    http://merd.sourceforge.net/pixel/ocaml-simple_gettext/%{name}-%{version}.tar.bz2
 License:	    GPL
 Group:		    Development/Other
-BuildRequires:  ocaml
+BuildRequires:  ocaml >= 3.10
 BuildRoot:      %{_tmppath}/%{name}-%{version}
 
 %description
@@ -20,7 +20,8 @@ OCaml wrapper for the gettext library
 %package devel
 Summary:    OCaml wrapper for the gettext library
 Group:		Development/Other
-Obsoletes:  %{name}
+Obsoletes:  %{name} <= 0.1
+Provides: %{name} <= 0.1
 
 %description devel
 OCaml wrapper for the gettext library
