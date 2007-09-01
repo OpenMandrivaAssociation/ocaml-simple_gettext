@@ -1,7 +1,7 @@
 %define base_name   simple_gettext
 %define name		ocaml-%{base_name}
 %define version     0.1
-%define release     %mkrel 10
+%define release     %mkrel 11
 
 Name:		    %{name}
 Version:	    %{version}
@@ -20,8 +20,7 @@ OCaml wrapper for the gettext library
 %package devel
 Summary:    OCaml wrapper for the gettext library
 Group:		Development/Other
-Obsoletes:  %{name} <= 0.1
-Provides: %{name} <= 0.1
+Requires:	%{name} = %{version}-%{release}
 
 %description devel
 OCaml wrapper for the gettext library
@@ -35,15 +34,19 @@ make
 %install
 rm -rf %{buildroot}
 install -d %{buildroot}%{_bindir}
-%makeinstall_std OCAMLFIND= STDLIB=%{_libdir}/ocaml/site-lib
+%makeinstall_std OCAMLFIND= STDLIB=%{ocaml_sitelib}
 
 %clean
 rm -rf %{buildroot}
 
-%files devel
+%files
 %defattr(-,root,root)
 %doc README docs
+%dir %{ocaml_sitelib}/%{base_name}
+%{ocaml_sitelib}/%{base_name}/*.cmi
+
+%files devel
+%defattr(-,root,root)
 %{_bindir}/*
-%{_libdir}/ocaml/site-lib/%{base_name}
-
-
+%{ocaml_sitelib}/%{base_name}/*
+%exclude %{ocaml_sitelib}/%{base_name}/*.cmi
