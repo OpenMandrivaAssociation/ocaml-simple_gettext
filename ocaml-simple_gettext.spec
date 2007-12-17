@@ -12,7 +12,6 @@ Source0:	    http://merd.sourceforge.net/pixel/ocaml-simple_gettext/%{name}-%{ve
 License:	    GPL
 Group:		    Development/Other
 BuildRequires:  ocaml >= 3.10
-BuildRoot:      %{_tmppath}/%{name}-%{version}
 
 %description
 OCaml wrapper for the gettext library
