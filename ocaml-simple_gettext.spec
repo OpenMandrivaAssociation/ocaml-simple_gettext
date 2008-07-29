@@ -1,7 +1,7 @@
 %define base_name   simple_gettext
 %define name		ocaml-%{base_name}
 %define version     0.1
-%define release     %mkrel 11
+%define release     %mkrel 13
 
 Name:		    %{name}
 Version:	    %{version}
