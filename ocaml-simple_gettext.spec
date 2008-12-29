@@ -1,7 +1,7 @@
 %define base_name   simple_gettext
 %define name		ocaml-%{base_name}
 %define version     0.1
-%define release     %mkrel 14
+%define release     %mkrel 15
 
 Name:		    %{name}
 Version:	    %{version}
@@ -34,7 +34,9 @@ make
 %install
 rm -rf %{buildroot}
 install -d %{buildroot}%{_bindir}
-%makeinstall_std OCAMLFIND= STDLIB=%{ocaml_sitelib}
+install -d %{buildroot}%{_libdir}/ocaml/stublibs
+%makeinstall_std OCAMLFIND_DESTDIR=%buildroot%{_libdir}/ocaml
+rm -f %{buildroot}%{_libdir}/ocaml/stublibs/*.owner
 
 %clean
 rm -rf %{buildroot}
@@ -42,11 +44,15 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 %doc README docs
-%dir %{ocaml_sitelib}/%{base_name}
-%{ocaml_sitelib}/%{base_name}/*.cmi
+%dir %{_libdir}/ocaml/%{base_name}
+%{_libdir}/ocaml/%{base_name}/*.cmi
+%{_libdir}/ocaml/%{base_name}/*.cma
+%{_libdir}/ocaml/%{base_name}/META
+%{_libdir}/ocaml/stublibs/*.so
 
 %files devel
 %defattr(-,root,root)
 %{_bindir}/*
-%{ocaml_sitelib}/%{base_name}/*
-%exclude %{ocaml_sitelib}/%{base_name}/*.cmi
+%{_libdir}/ocaml/%{base_name}/*.a
+%{_libdir}/ocaml/%{base_name}/*.cmxa
+%{_libdir}/ocaml/%{base_name}/*.mli
