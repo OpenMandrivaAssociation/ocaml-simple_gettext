@@ -7,7 +7,7 @@ Name:		    %{name}
 Version:	    %{version}
 Release: 	    %{release}
 Summary:	    OCaml wrapper for the gettext library
-URL:		    http://merd.net/pixel/ocaml-simple_gettext
+URL:		    https://merd.net/pixel/ocaml-simple_gettext
 Source0:	    http://merd.sourceforge.net/pixel/ocaml-simple_gettext/%{name}-%{version}.tar.bz2
 License:	    GPL
 Group:		    Development/Other
