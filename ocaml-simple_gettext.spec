@@ -11,6 +11,7 @@ URL:		    https://merd.net/pixel/ocaml-simple_gettext
 Source0:	    http://merd.sourceforge.net/pixel/ocaml-simple_gettext/%{name}-%{version}.tar.bz2
 License:	    GPL
 Group:		    Development/Other
+BuildRequires:	make
 BuildRequires:  ocaml >= 3.10
 BuildRequires:  ocaml-findlib
 BuildRoot:      %{_tmppath}/%{name}-%{version}
