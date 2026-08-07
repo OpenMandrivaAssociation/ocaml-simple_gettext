@@ -2,7 +2,7 @@
 
 Name:		ocaml-%{base_name}
 Version:	0.1
-Release:	19
+Release:	20
 Summary:	OCaml wrapper for the gettext library
 URL:		https://ocaml.org/
 # Upstream (merd.net / pixel) is long dead; tarball from historic cooker SRPM
@@ -61,16 +61,23 @@ make all \
 
 %install
 export OCAMLFIND_DESTDIR=%{buildroot}%{_libdir}/ocaml
+export OCAMLFIND_LDCONF=ignore
 export DESTDIR=%{buildroot}
-mkdir -p "$OCAMLFIND_DESTDIR" %{buildroot}%{_bindir}
-# findlib install + binary
-make findlib-install install-bin \
-	OCAMLFIND=ocamlfind \
-	DESTDIR=%{buildroot} \
-	INSTALLBINDIR=%{_bindir}
+mkdir -p "$OCAMLFIND_DESTDIR/stublibs" %{buildroot}%{_bindir}
+# Install binary first
+make install-bin DESTDIR=%{buildroot} INSTALLBINDIR=%{_bindir}
+# Manual findlib install: avoid ld.conf write and place dll in stublibs
+install -d "$OCAMLFIND_DESTDIR/%{base_name}"
+install -m 644 META simple_gettext.cmi simple_gettext.mli \
+	simple_gettext.cma simple_gettext.cmxa simple_gettext.a \
+	libsimple_gettext.a \
+	"$OCAMLFIND_DESTDIR/%{base_name}/"
+# cmx is optional (not always produced as installable name)
+if [ -f simple_gettext.cmx ]; then
+	install -m 644 simple_gettext.cmx "$OCAMLFIND_DESTDIR/%{base_name}/"
+fi
+install -m 755 dllsimple_gettext.so "$OCAMLFIND_DESTDIR/stublibs/"
 rm -f %{buildroot}%{_libdir}/ocaml/stublibs/*.owner
-# Ensure native bits land in the package dir if findlib put them there
-ls -la "$OCAMLFIND_DESTDIR/%{base_name}/" || true
 
 %files
 %defattr(-,root,root)
@@ -87,5 +94,5 @@ ls -la "$OCAMLFIND_DESTDIR/%{base_name}/" || true
 %{_bindir}/xgettext-ocaml
 %{_libdir}/ocaml/%{base_name}/*.a
 %{_libdir}/ocaml/%{base_name}/*.cmxa
-%{_libdir}/ocaml/%{base_name}/*.cmx
 %{_libdir}/ocaml/%{base_name}/*.mli
+%{_libdir}/ocaml/%{base_name}/*.cmx
